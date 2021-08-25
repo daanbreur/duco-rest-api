@@ -310,12 +310,12 @@ def api_auth():
         return _error("No user found")
 
 
-@app.route("/new_wallet/")
+@app.route("/new_wallet/", method=["POST"])
 @limiter.limit("1 per day")
 def api_wallet():
-    username = request.args.get('username', None)
-    unhashed_pass = str(request.args.get('password', None)).encode('utf-8')
-    email = request.args.get('email', None)
+    username = request.form.get('username', None)
+    unhashed_pass = str(request.form.get('password', None)).encode('utf-8')
+    email = request.form.get('email', None)
     dbg("/GET/new_wallet", username, unhashed_pass, email)
 
     if not match(r"^[A-Za-z0-9_-]*$", username):
