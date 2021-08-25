@@ -87,7 +87,7 @@ with open(CONFIG_BANS, "r") as bannedusrfile:
 
 def dbg(*message):
     pass
-    #print(*message)
+    # print(*message)
 
 
 @app.errorhandler(429)
@@ -270,12 +270,12 @@ def ping():
     return _success("Pong!")
 
 
-@app.route("/auth/")
+@app.route("/auth/", method=["POST"])
 @limiter.limit("2 per minute")
 def api_auth():
-    username = str(request.args.get('username', None))
-    unhashed_pass = str(request.args.get('password', None)).encode('utf-8')
-    dbg("/GET/auth", username, unhashed_pass)
+    username = str(request.form['username'])
+    unhashed_pass = str(request.form['password']).encode('utf-8')
+    dbg("/POST/auth", username, unhashed_pass)
 
     if unhashed_pass.decode() == DUCO_PASS:
         return _success("Logged in")
